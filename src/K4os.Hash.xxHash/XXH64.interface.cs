@@ -13,14 +13,15 @@ namespace K4os.Hash.xxHash
 	{
 		/// <summary>Hash of empty buffer.</summary>
 		public const ulong EmptyHash = 17241709254077376921;
-		
+
 		/// <summary>Hash of provided buffer.</summary>
 		/// <param name="bytes">Buffer.</param>
 		/// <param name="length">Length of buffer.</param>
 		/// <returns>Digest.</returns>
 		public static unsafe ulong DigestOf(void* bytes, int length) =>
 			XXH64_hash(bytes, length, 0);
-		
+
+#if SPAN_SUPPORTED
 		/// <summary>Hash of provided buffer.</summary>
 		/// <param name="bytes">Buffer.</param>
 		/// <returns>Digest.</returns>
@@ -29,6 +30,7 @@ namespace K4os.Hash.xxHash
 			fixed (byte* bytesP = &MemoryMarshal.GetReference(bytes))
 				return DigestOf(bytesP, bytes.Length);
 		}
+#endif
 
 		/// <summary>Hash of provided buffer.</summary>
 		/// <param name="bytes">Buffer.</param>
@@ -63,7 +65,8 @@ namespace K4os.Hash.xxHash
 			fixed (XXH64_state* stateP = &_state)
 				XXH64_update(stateP, bytes, length);
 		}
-		
+
+#if SPAN_SUPPORTED
 		/// <summary>Updates the has using given buffer.</summary>
 		/// <param name="bytes">Buffer.</param>
 		public unsafe void Update(ReadOnlySpan<byte> bytes)
@@ -71,6 +74,7 @@ namespace K4os.Hash.xxHash
 			fixed (byte* bytesP = &MemoryMarshal.GetReference(bytes))
 				Update(bytesP, bytes.Length);
 		}
+#endif
 
 		/// <summary>Updates the has using given buffer.</summary>
 		/// <param name="bytes">Buffer.</param>
@@ -79,7 +83,7 @@ namespace K4os.Hash.xxHash
 		public unsafe void Update(byte[] bytes, int offset, int length)
 		{
 			Validate(bytes, offset, length);
-			
+
 			fixed (byte* bytesP = bytes)
 				Update(bytesP + offset, length);
 		}

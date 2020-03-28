@@ -1,0 +1,11 @@
+{
+    "name": "k4os.hash.xxhash",
+    "version": "1.0.6",
+    "displayName": "K4os.Hash.xxHash",
+    "description": "XXHash for .NET Core 1.1/2.0 & .NET Standard 1.6/2.0 , converted to a Unity package by Tom Read Cutting",
+    "unity": "2019.3",
+    "author": {
+      "name": "Milosz Krajewski ",
+      "url": "https://github.com/MiloszKrajewski/K4os.Hash.xxHash"
+    }
+  }
